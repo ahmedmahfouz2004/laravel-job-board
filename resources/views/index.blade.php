@@ -5,5 +5,4 @@
         <li>Jobs trending</li>
     </ul>
 
-
 </x-layout>
