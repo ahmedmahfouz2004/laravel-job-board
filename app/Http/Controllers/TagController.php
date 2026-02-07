@@ -8,29 +8,46 @@ use Illuminate\Http\Request;
 
 class TagController extends Controller
 {
-    function index(){
+    public function index()
+    {
         $data = Tag::all();
-        return view('tag.index', ['tags' => $data, 'pageTitle' => 'Tags']);
+        return view('tag.index',['tags'=>$data , 'pageTitle'=>'Blog']);
     }
-    function create()
-    {
-        Tag::create([
-            'title' => 'Software Engineer'
-        ]);
 
-        return redirect( '/tags');
+    public function create()
+    {
+        return view('tag.create',['pageTitle'=>'Blog - Create New Tag']);
     }
-    function Many_to_Many()
+
+    public function store(Request $request)
     {
-        $post1 = Post::find(1);
-        $post2 = Post::find(2);
+        //
+    }
 
-        $post1->tags()->attach([1,2]);
-        $post2->tags()->attach([1]);
+    public function show(string $id)
+    {
+        $tag =  Tag::findOrFail($id);
+        return view('tag.show' , ['tag'=>$tag , 'pageTitle'=>$tag->title]);
+    }
 
-        return response()->json(([
-            'post1' => $post1->tags,
-            'post2' => $post2->tags
-        ]));
+    public function edit(string $id)
+    {
+        return view('tag.edit' ,['pageTitle'=>'Blog - Edit tag']);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, string $id)
+    {
+        //
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(string $id)
+    {
+        //
     }
 }
