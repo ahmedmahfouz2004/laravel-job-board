@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Route;
 
 //API Routes
 
-Route::apiResource('post',ApiPostController::class);
+Route::apiResource('blog',ApiPostController::class);
 
 
 //Route::get('/', [IndexController::class,'index']);

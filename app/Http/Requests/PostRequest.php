@@ -26,19 +26,29 @@ class PostRequest extends FormRequest
     {
         return [
             'title'  => 'required|string',
-            'author' => 'required|string',
+//            'author' => 'required|string',
             'body'   => 'required|string',
-            'published' =>'required|boolean'
+            'published' =>'boolean'
         ];
     }
 
-    protected function failedValidation(Validator $validator)
+    public function messages(): array
     {
-        throw new HttpResponseException(
-            response()->json([
-                'status' => 'failed',
-                'error' => $validator->errors()->first()
-            ])
-        );
+        return [
+            'title.required'  => 'mandatory field',
+            'author.required' => 'mandatory field',
+            'body.required'   => 'mandatory field',
+        ];
     }
+
+
+//    protected function failedValidation(Validator $validator)
+//    {
+//        throw new HttpResponseException(
+//            response()->json([
+//                'status' => 'failed',
+//                'error' => $validator->errors()->first()
+//            ])
+//        );
+//    }
 }

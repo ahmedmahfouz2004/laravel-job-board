@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CommentRequest;
 use App\Models\Comment;
 use App\Models\Post;
 use Illuminate\Http\Request;
@@ -19,9 +20,11 @@ class CommentController extends Controller
         return view('comment.create',['pageTitle'=>'Blog - Create New Comment']);
     }
 
-    public function store(Request $request)
+    public function store(CommentRequest $request)
     {
-        //
+        $data = $request->validated();
+        $comment = Comment::create($data);
+        return redirect()->route('post.index')->with('success','Comment Added Successfully!');
     }
 
     public function show(string $id)

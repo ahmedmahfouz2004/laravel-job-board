@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\PostRequest;
 use App\Models\Post;
 use Illuminate\Http\Request;
 
@@ -12,7 +13,7 @@ class PostController extends Controller
      */
     public function index()
     {
-        $data = Post::Paginate(5);
+        $data = Post::latest()->Paginate(5);
         return view('post.index',['posts'=>$data , 'pageTitle'=>'Blog']);
     }
 
@@ -27,9 +28,11 @@ class PostController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(PostRequest $request)
     {
-        //
+        $data = $request->validated();
+        $post = Post::create($data);
+        return redirect()->route('post.index')->with('success','Post Created Successfully!');
     }
 
     /**
@@ -46,15 +49,20 @@ class PostController extends Controller
      */
     public function edit(string $id)
     {
-        return view('post.edit' ,['pageTitle'=>'Blog - Edit Post']);
+        $post = Post::findOrFail($id);
+        return view('post.edit' ,['post' => $post,'pageTitle'=>'Blog - Edit Post: '. $post->title]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(PostRequest $request, string $id)
     {
-        //
+        $data = $request->validated();
+        $post = Post::findOrFail($id);
+        $post->update($data);
+//        $post = Post::where('id' , "=" , $id)->update($data);
+        return redirect()->route('post.index')->with('success','Post Updated Successfully!');
     }
 
     /**
@@ -62,6 +70,7 @@ class PostController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $post = Post::where('id' , "=" , $id)->delete();
+        return redirect()->route('post.index')->with('success','Post Deleted Successfully!');
     }
 }
